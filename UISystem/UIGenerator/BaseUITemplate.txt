@@ -1,0 +1,35 @@
+using UnityEngine;
+using Cysharp.Threading.Tasks;
+using Maniac;
+using DG.Tweening;
+
+namespace @NamespaceName
+{
+    public class @ScriptName : BaseUI
+    {
+        public override void OnSetup(object parameter = null) //first
+        {
+            base.OnSetup(parameter);
+        }
+
+        public override async UniTask OnTransitionEnter(object parameter = null) //second
+        {
+            await base.OnTransitionEnter(parameter);
+        }
+
+        public override void OnShow(object parameter = null) // last
+        {
+            base.OnShow(parameter);
+        }
+
+        public override async UniTask OnTransitionExit()
+        {
+            await base.OnTransitionExit();
+        }
+
+        public override async UniTask Close(object param = null)
+        {
+            await base.Close(param);
+        }
+    }
+}

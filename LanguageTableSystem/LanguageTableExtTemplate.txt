@@ -1,0 +1,12 @@
+﻿using System.Diagnostics.CodeAnalysis;
+using UnityEngine;
+
+namespace Maniac.LanguageTableSystem
+{
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public partial class LanguageTable:ScriptableObject
+    {
+        //[DON'T DELETE THESE COMMENTS]
+        //[HERE]
+    }
+}
