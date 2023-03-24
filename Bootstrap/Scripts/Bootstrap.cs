@@ -17,38 +17,47 @@ namespace Maniac.Bootstrap.Scripts
         [SerializeField] private UIData uiData;
         [SerializeField] private UIManager uiManagerPrefab;
         
-        private void Awake()
-        {
-            DOTween.Init();
-        }
-
         private async void Start()
         {
-            var mainService = CreateGameService();
+            var bootStrapService = CreateBootStrapServiceGroup();
 
-            await mainService.Run();
+            await bootStrapService.Run();
         }
 
-        private Service CreateGameService()
+        private Service CreateBootStrapServiceGroup()
         {
-            var startServiceGroup = new SequenceServiceGroup("Start Service");
-            
-            startServiceGroup.Add(new InitDotweenService());
-            startServiceGroup.Add(new InitUIManagerService(uiData,uiManagerPrefab));
-            startServiceGroup.Add(new InitDataBaseService(dataBase));
+            var essentialServiceGroup = CreateEssentialServiceGroup();
+            var subServiceGroup = CreateSubServiceGroup();
 
-            var essentialServiceGroup = new SequenceServiceGroup("Essential Service");
+            var bootStrap = new SequenceServiceGroup("BootStrap Service");
+            bootStrap.Add(essentialServiceGroup);
+            bootStrap.Add(subServiceGroup);
+
+            return bootStrap;
+        }
+
+        private Service CreateEssentialServiceGroup()
+        {
+            var essentialServiceGroup = new SequenceServiceGroup("Essential Services");
             
+            essentialServiceGroup.Add(new InitDotweenService());
+            essentialServiceGroup.Add(new InitUIManagerService(uiData,uiManagerPrefab));
+            essentialServiceGroup.Add(new InitDataBaseService(dataBase));
             essentialServiceGroup.Add(new InitSpawnerManagerService());
             essentialServiceGroup.Add(new InitProfileManagerService());
             essentialServiceGroup.Add(new InitLanguageTableService(languageTable)); //this should be behind InitProfileManagerService
 
+            return essentialServiceGroup;
+        }
 
-            var gameService = new SequenceServiceGroup("Game Service");
-            gameService.Add(startServiceGroup);
-            gameService.Add(essentialServiceGroup);
+        private Service CreateSubServiceGroup()
+        {
+            var subServiceGroup = new SequenceServiceGroup("Init SubSystems Services");
 
-            return gameService;
+            // Add your game initialization here
+
+
+            return subServiceGroup;
         }
     }
 }
