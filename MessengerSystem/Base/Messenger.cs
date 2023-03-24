@@ -8,21 +8,10 @@ namespace Maniac.MessengerSystem.Base
 {
     public class Messenger
     {
-        private static Dictionary<Type, List<IMessageListener>> messagesMap;
-        private static bool hasInitialized = false;
-
-        private static void SelfInitialize()
-        {
-            if (hasInitialized) return;
-
-            Messenger.messagesMap = new Dictionary<Type, List<IMessageListener>>();
-            hasInitialized = true;
-        }
+        private static Dictionary<Type, List<IMessageListener>> messagesMap = new Dictionary<Type, List<IMessageListener>>();
 
         public static void Register(IMessageListener messageListener, Type type)
         {
-            SelfInitialize();
-
             if (!Messenger.messagesMap.ContainsKey(type))
             {
                 Messenger.messagesMap.Add(type, new List<IMessageListener>());
@@ -37,8 +26,6 @@ namespace Maniac.MessengerSystem.Base
 
         public static void Unregister(IMessageListener messageListener, Type typeToRemove)
         {
-            SelfInitialize();
-
             if (Messenger.messagesMap.ContainsKey(typeToRemove))
             {
                 List<IMessageListener> listeners = Messenger.messagesMap[typeToRemove];
@@ -51,15 +38,11 @@ namespace Maniac.MessengerSystem.Base
 
         public static void ResetMessenger()
         {
-            SelfInitialize();
-            
             Messenger.messagesMap.Clear();
         }
 
         public static void UnregisterAll(IMessageListener messageListener)
         {
-            SelfInitialize();
-            
             foreach (KeyValuePair<Type, List<IMessageListener>> item in Messenger.messagesMap)
             {
                 if (item.Value.Contains(messageListener))
@@ -71,8 +54,6 @@ namespace Maniac.MessengerSystem.Base
 
         public static void SendMessage(Message messageToSend)
         {
-            SelfInitialize();
-
             if (Messenger.messagesMap.TryGetValue(messageToSend.GetType(), out List<IMessageListener> listeners))
             {
                 List<IMessageListener> copyListeners = listeners.ToList(); // to fix modified list bug
