@@ -1,0 +1,12 @@
+﻿using System.Diagnostics.CodeAnalysis;
+using UnityEngine;
+
+namespace Maniac.AudioSystem
+{
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    public static class Audio
+    {
+        //[DON'T DELETE THESE COMMENTS]
+        //[HERE]
+    }
+}

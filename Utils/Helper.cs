@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.CodeDom.Compiler;
 
 namespace Maniac.Utils
 {
@@ -72,6 +73,42 @@ namespace Maniac.Utils
         {
             f = Mathf.Clamp01(f);
             return (byte)(f * 255);
+        }
+        
+        private static List<string> keywords = new List<string>{ "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else", "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if", "implicit", "in", "int", "interface", "internal", "is", "lock", "long", "namespace", "new", "null", "object", "operator", "out", "override", "params", "private", "protected", "public", "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void", "volatile", "while" };
+        
+        public static bool IsValidVariableName(string name)
+        {
+            // Check if the name is null or empty
+            if (string.IsNullOrEmpty(name))
+            {
+                return false;
+            }
+
+            // Check if the name starts with a letter or underscore
+            if (!char.IsLetter(name[0]) && name[0] != '_')
+            {
+                return false;
+            }
+
+            // Check if each subsequent character is a letter, digit, or underscore
+            for (int i = 1; i < name.Length; i++)
+            {
+                if (!char.IsLetterOrDigit(name[i]) && name[i] != '_')
+                {
+                    return false;
+                }
+            }
+
+            // Check if the name is a C# keyword
+            
+            if (keywords.Contains(name))
+            {
+                return false;
+            }
+
+            // If all checks pass, the name is valid
+            return true;
         }
     }
 }

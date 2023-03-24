@@ -335,9 +335,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: d73678bdb997ec44cb442c01d04c81d9, type: 2}
     - target: {fileID: 3120369285993458966, guid: 1c5e0826a0400114cb4c8d8a9a753062, type: 3}
+      propertyPath: audioData
+      value: 
+      objectReference: {fileID: 11400000, guid: 7eba2e20f5fe1c04a8d57799fb888489, type: 2}
+    - target: {fileID: 3120369285993458966, guid: 1c5e0826a0400114cb4c8d8a9a753062, type: 3}
       propertyPath: languageTable
       value: 
       objectReference: {fileID: 11400000, guid: 9a0955d8d4e41ea4ca6e0b2aa78f1edb, type: 2}
+    - target: {fileID: 3120369285993458966, guid: 1c5e0826a0400114cb4c8d8a9a753062, type: 3}
+      propertyPath: audioObjectPrefab
+      value: 
+      objectReference: {fileID: 5649411622790242370, guid: 35dc1fdd520c00a44a843896d56ad5e9, type: 3}
     - target: {fileID: 3120369285993458967, guid: 1c5e0826a0400114cb4c8d8a9a753062, type: 3}
       propertyPath: m_Name
       value: Bootstrap

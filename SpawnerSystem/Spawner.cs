@@ -8,7 +8,8 @@ namespace Maniac.SpawnerSystem
         private readonly MonoBehaviour _prefab;
         private readonly ObjectPool<T> _pool;
         public ObjectPool<T> Pool => _pool;
-
+        private int counter = 0;
+        
         public Spawner(T prefab) 
         {
             _prefab = prefab;
@@ -18,6 +19,7 @@ namespace Maniac.SpawnerSystem
         private T CreateFunction()
         {
             var mono = UnityEngine.Object.Instantiate(_prefab);
+            mono.name = _prefab.name + SpawnerManager.Indicator + counter++;
             
             return mono as T;
         }
