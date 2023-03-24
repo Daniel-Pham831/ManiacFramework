@@ -1,0 +1,26 @@
+_release/
+Temp/
+DownloadedData/
+Library/*
+.vs/
+obj/
+.fake/
+*.sln
+*.csproj
+*.apk
+*.stackdump
+Build/Android/Piano Solo - White Tiles 4/
+Build/Android/Color Piano/
+FR2_Cache.asset*
+/remote_config_data
+Build/iOS/*
+!Build/iOS/Config
+/Assets/Firebase/m2repository/com/google/firebase/firebase-analytics-unity/6.0.0/firebase-analytics-unity-6.0.0.aar.meta
+/Assets/Firebase/m2repository/com/google/firebase/firebase-app-unity/6.0.0/firebase-app-unity-6.0.0.aar.meta
+/Assets/Firebase/m2repository/com/google/firebase/firebase-config-unity/6.0.0/firebase-config-unity-6.0.0.aar.meta
+/Assets/Firebase/m2repository/com/google/firebase/firebase-crashlytics-unity/6.0.0/firebase-crashlytics-unity-6.0.0.aar.meta
+/Assets/Firebase/m2repository/com/google/firebase/firebase-messaging-unity/6.0.0/firebase-messaging-unity-6.0.0.aar.meta
+/ProjectSettings/AndroidResolverDependencies.xml
+/Assets/Plugins/Android/Firebase/res/values/crashlytics_build_id.xml
+/.idea/*
+.vscode/launch.json
