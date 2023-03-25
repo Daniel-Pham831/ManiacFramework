@@ -67,10 +67,10 @@ namespace Maniac.UISystem
             _closeAllExcepts.Add(ui);
         }
 
-        public async UniTask<BaseUI> Show<T>(object parameter = null) where T : BaseUI
+        public async UniTask<T> Show<T>(object parameter = null) where T : BaseUI
         {
             string uiName = typeof(T).ToString();
-            return await Show(uiName, parameter);
+            return await Show(uiName, parameter) as T;
         }
 
         public T GetShowedUI<T>() where T : BaseUI

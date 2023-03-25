@@ -17,9 +17,14 @@ namespace Maniac.ProfileSystem
         const string PROFILE_DATA_FOLDER_NAME = "Profiles";
         const string PROFILE_DATA_FILE_NAME_SUFFIX = "json";
 
-        public static Dictionary<string, ProfileRecord> recordsCache = new Dictionary<string, ProfileRecord>();
+        public Dictionary<string, ProfileRecord> recordsCache = new Dictionary<string, ProfileRecord>();
 
-        public static T Get<T>() where T : ProfileRecord
+        public void Init()
+        {
+            PreLoadAllProfileRecordsIntoCache();
+        }
+
+        public T Get<T>() where T : ProfileRecord
         {
             if (recordsCache.TryGetValue(typeof(T).Name, out ProfileRecord value))
                 return value as T;
@@ -27,7 +32,7 @@ namespace Maniac.ProfileSystem
             return Load<T>();
         }
 
-        public static bool Save(ProfileRecord record)
+        public bool Save(ProfileRecord record)
         {
             bool result = false;
             try
@@ -49,7 +54,7 @@ namespace Maniac.ProfileSystem
             return result;
         }
 
-        public static T Load<T>() where T : ProfileRecord
+        public T Load<T>() where T : ProfileRecord
         {
             ProfileRecord record = null;
             string savePath = $"{GetProfileFolderPath()}/{typeof(T).Name}.{PROFILE_DATA_FILE_NAME_SUFFIX}";
@@ -68,7 +73,7 @@ namespace Maniac.ProfileSystem
             return record as T;
         }
 
-        private static void SaveCache(ProfileRecord record)
+        private void SaveCache(ProfileRecord record)
         {
             string typeName = record.GetType().Name;
             if (!recordsCache.ContainsKey(typeName))
@@ -79,7 +84,7 @@ namespace Maniac.ProfileSystem
             recordsCache[typeName] = record;
         }
 
-        public static void LoadAllProfileRecordsIntoCache()
+        private void PreLoadAllProfileRecordsIntoCache()
         {
             Dictionary<string, Type> typeList = GetListTypeBaseOnProfile();
 
@@ -105,7 +110,7 @@ namespace Maniac.ProfileSystem
             }
         }
 
-        private static Dictionary<string, Type> GetListTypeBaseOnProfile()
+        private Dictionary<string, Type> GetListTypeBaseOnProfile()
         {
             Dictionary<string, Type> objects = new Dictionary<string, Type>();
             IEnumerable<Type> types = typeof(ProfileRecord).GetAllSubclasses();
@@ -113,10 +118,11 @@ namespace Maniac.ProfileSystem
             {
                 objects.Add(type.Name, type);
             }
+
             return objects;
         }
 
-        private static string GetProfileFolderPath()
+        private string GetProfileFolderPath()
         {
             string folderPath = $"{Application.persistentDataPath}/{PROFILE_DATA_FOLDER_NAME}";
             if (!Directory.Exists(folderPath))
@@ -129,7 +135,8 @@ namespace Maniac.ProfileSystem
         [MenuItem("Maniac/Profile/Clear All Game Data")]
         public static void ClearAllRecords()
         {
-            bool isClear = EditorUtility.DisplayDialog("Clear All Data?", "All Personal data will be clear. Do you want it?", "Yes", "No");
+            bool isClear = EditorUtility.DisplayDialog("Clear All Data?",
+                "All Personal data will be clear. Do you want it?", "Yes", "No");
             if (isClear)
             {
                 ClearGameData();
@@ -162,7 +169,7 @@ namespace Maniac.ProfileSystem
                 dir.Delete(true);
             }
         }
-        
+
         public static void ClearGameData()
         {
             ClearPersistantData();

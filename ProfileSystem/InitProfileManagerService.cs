@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Maniac.Services;
+using Maniac.Utils;
 
 namespace Maniac.ProfileSystem
 {
@@ -7,7 +8,10 @@ namespace Maniac.ProfileSystem
     {
         public override async UniTask<IService.Result> Execute()
         {
-            ProfileManager.LoadAllProfileRecordsIntoCache();
+            var profileManager = new ProfileManager();
+            Locator<ProfileManager>.Set(profileManager);
+            
+            profileManager.Init();
             return IService.Result.Success;
         }
     }
