@@ -1,4 +1,8 @@
-﻿using DG.Tweening;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using Game.Game;
 using Maniac.AudioSystem;
 using Maniac.DataBaseSystem;
 using Maniac.LanguageTableSystem;
@@ -7,6 +11,8 @@ using Maniac.Services;
 using Maniac.SpawnerSystem;
 using Maniac.TimeSystem;
 using Maniac.UISystem;
+using Maniac.Utils;
+using Maniac.Utils.Extension;
 using UnityEngine;
 
 namespace Maniac.Bootstrap.Scripts
@@ -23,8 +29,7 @@ namespace Maniac.Bootstrap.Scripts
         [Header("Audio")]
         [SerializeField] private AudioData audioData;
         [SerializeField] private AudioObjectInstance audioObjectPrefab;
-        
-        
+
         private async void Start()
         {
             var bootStrapService = CreateBootStrapServiceGroup();
@@ -35,23 +40,23 @@ namespace Maniac.Bootstrap.Scripts
         private Service CreateBootStrapServiceGroup()
         {
             var essentialServiceGroup = CreateEssentialServiceGroup();
-            var subServiceGroup = CreateSubServiceGroup();
+            var gameServiceGroup = CreateGameServiceGroup();
 
             var bootStrap = new SequenceServiceGroup("BootStrap Service");
             bootStrap.Add(essentialServiceGroup);
-            bootStrap.Add(subServiceGroup);
+            bootStrap.Add(gameServiceGroup);
 
             return bootStrap;
         }
 
         private Service CreateEssentialServiceGroup()
         {
-            var essentialServiceGroup = new SequenceServiceGroup("Essential Services");
+            var essentialServiceGroup = new SequenceServiceGroup("Maniac Essential Services");
             
             essentialServiceGroup.Add(new InitDotweenService());
             essentialServiceGroup.Add(new InitTimeManagerService());
-            essentialServiceGroup.Add(new InitUIManagerService(uiData,uiManagerPrefab));
             essentialServiceGroup.Add(new InitDataBaseService(dataBase));
+            essentialServiceGroup.Add(new InitUIManagerService(uiData,uiManagerPrefab));
             essentialServiceGroup.Add(new InitSpawnerManagerService());
             essentialServiceGroup.Add(new InitProfileManagerService());
             essentialServiceGroup.Add(new InitLanguageTableService(languageTable)); //this should be behind InitProfileManagerService
@@ -60,12 +65,11 @@ namespace Maniac.Bootstrap.Scripts
             return essentialServiceGroup;
         }
 
-        private Service CreateSubServiceGroup()
+        private Service CreateGameServiceGroup()
         {
-            var subServiceGroup = new SequenceServiceGroup("Init SubSystems Services");
+            var subServiceGroup = new SequenceServiceGroup("Game Systems Services");
 
-            // Add your game initialization here
-
+            // Add your game initialization services here
 
             return subServiceGroup;
         }

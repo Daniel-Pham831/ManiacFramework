@@ -9,69 +9,81 @@ namespace Maniac.SpawnerSystem
 {
     public class SpawnerManager
     {
-        public static readonly string Indicator = "~:||";
+        public static readonly string Indicator = " [Clone]-";
 
         private TimeManager _timeManager => Locator<TimeManager>.Instance;
 
-        private Dictionary<string, Spawner<MonoBehaviour>> _spawners;
+        private Dictionary<string, Spawner<Object>> _spawners;
         private Dictionary<string, Timer> _timerForReleaseAfterMonos = new Dictionary<string, Timer>();
 
         public void Initialize()
         {
-            _spawners = new Dictionary<string, Spawner<MonoBehaviour>>();
+            _spawners = new Dictionary<string, Spawner<Object>>();
         }
 
         public void ResetAllSpawner()
         {
             foreach (var spawner in _spawners.Values)
             {
-                spawner.Pool.Clear();
+                spawner.Reset();
             }
         }
 
-        public T Get<T>(T prefab) where T : MonoBehaviour
+        public T Get<T>(T prefab) where T : Object
         {
             if (prefab == null)
-                return null;
+            {
+                throw new Exception("Null Exception! You can not spawn null object");
+            }
 
             return GetHelper(prefab) as T;
         }
 
-        private MonoBehaviour GetHelper(MonoBehaviour prefab)
+        private Object GetHelper(Object prefab)
         {
             if (prefab == null)
                 return null;
             
-            var key = prefab.gameObject.name;
+            var key = prefab.name;
             if (!_spawners.ContainsKey(key))
             {
-                var newSpawner = new Spawner<MonoBehaviour>(prefab);
+                var newSpawner = new Spawner<Object>(prefab);
                 _spawners.Add(key,newSpawner);
             }
 
             return _spawners[key].Pool.Get();
         }
 
-        public void Release(MonoBehaviour monoToRelease)
+        public void Release<T>(T objectToRelease) where T : Object
         {
-            if (monoToRelease == null) return;
-            CheckReleaseAfter(monoToRelease.gameObject.name); // Make sure to clear release after on this mono
+            ReleaseHelper(objectToRelease);
+        }
+
+        private void ReleaseHelper(Object objToRelease)
+        {
+            if (objToRelease == null) return;
+            CheckReleaseAfter(objToRelease.name); // Make sure to clear release after on this mono
             
-            var key = monoToRelease.gameObject.name.Substring(0,monoToRelease.gameObject.name.IndexOf(SpawnerManager.Indicator, StringComparison.Ordinal));
+            var key = objToRelease.name.Substring(0,objToRelease.name.IndexOf(SpawnerManager.Indicator, StringComparison.Ordinal));
 
             if (!_spawners.ContainsKey(key))
             {
                 Debug.LogError($"There is no {key} spawner. Please investigate!");
-                Object.Destroy(monoToRelease);
+                Object.Destroy(objToRelease);
                 return;
             }
 
-            _spawners[key].Pool.Release(monoToRelease);
+            _spawners[key].Pool.Release(objToRelease);
         }
 
-        public void ReleaseAfter(MonoBehaviour monoToRelease, float duration)
+        public void ReleaseAfter<T>(T objToRelease, float durationInSeconds) where T : Object
         {
-            var key = monoToRelease.gameObject.name;
+            ReleaseAfterHelper(objToRelease, durationInSeconds);
+        }
+
+        private void ReleaseAfterHelper(Object monoToRelease, float duration)
+        {
+            var key = monoToRelease.name;
             var timer = _timeManager.GetFreeTimer();
             _timerForReleaseAfterMonos.Add(key,timer);
             

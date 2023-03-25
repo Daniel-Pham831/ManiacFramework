@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Maniac.Utils.Extension;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Maniac.TimeSystem
 {
@@ -8,13 +11,20 @@ namespace Maniac.TimeSystem
         public static float DeltaTime { get; private set; }
         public static float FixedDeltaTime { get; private set; }
         public static float Time { get; private set; }
-        private static float _speedUpMultiplier = 1f;
+        private float _timeMultiplier = 1f;
         private Queue<Timer> _freeTimers = new Queue<Timer>();
         private List<Timer> _activeTimers = new List<Timer>();
+        private float _previousTimeMultiplier;
 
-        private void Init()
+        public void Init()
         {
             Time = 0;
+            _previousTimeMultiplier = _timeMultiplier = 1f;
+
+            var timeUpdator = new GameObject("Time Updator");
+            timeUpdator.AddComponent<TimeUpdator>();
+            
+            Object.DontDestroyOnLoad(timeUpdator);
         }
 
         public void OnTimeOut(Action callback, float duration)
@@ -28,12 +38,16 @@ namespace Maniac.TimeSystem
 
             Timer timer = GetFreeTimer();
             timer.Start(duration, callback);
+        }
+
+        public void AddActiveTimer(Timer timer)
+        {
             _activeTimers.Add(timer);
         }
 
         public void Update(float dependentGamePlayDeltaTime = 0)
         {
-            dependentGamePlayDeltaTime *= _speedUpMultiplier;
+            dependentGamePlayDeltaTime *= _timeMultiplier;
             UpdateActiveTimers(dependentGamePlayDeltaTime);
             DeltaTime = dependentGamePlayDeltaTime;
             Time += dependentGamePlayDeltaTime;
@@ -41,6 +55,7 @@ namespace Maniac.TimeSystem
         
         public void FixedUpdate(float fixedDeltaTime = 0)
         {
+            fixedDeltaTime *= _timeMultiplier;
             FixedDeltaTime = fixedDeltaTime;
         }
 
@@ -64,7 +79,7 @@ namespace Maniac.TimeSystem
 
         public void SpeedUp(float multiplier)
         {
-            _speedUpMultiplier = multiplier;
+            _timeMultiplier = multiplier;
         }
 
         public Timer GetFreeTimer()
@@ -76,6 +91,22 @@ namespace Maniac.TimeSystem
         {
             freeTimer.DeActiveTimer();
             _freeTimers.Enqueue(freeTimer);
+        }
+
+        public void Pause()
+        {
+            _previousTimeMultiplier = _timeMultiplier;
+            _timeMultiplier = 0f;
+        }
+
+        public void UnPause()
+        {
+            _timeMultiplier = _previousTimeMultiplier;
+        }
+
+        public void RemoveActiveTimer(Timer timer)
+        {
+            _activeTimers.Remove(timer);
         }
     }
 }

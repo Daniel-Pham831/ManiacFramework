@@ -176,6 +176,7 @@ namespace Maniac.DataBaseSystem
                 string templatePath = Path.Combine(Application.dataPath, "Maniac/DataBaseSystem/DataBaseConfigGenerator/DataBaseConfigTemplate.txt");
                 string dataTemplateContent = File.ReadAllText(templatePath);
                 dataTemplateContent = dataTemplateContent.Replace("@ScriptName", scriptName);
+                dataTemplateContent = dataTemplateContent.Replace("@Namespace", typeof(DataBaseConfig).Namespace);
                 // do not overwrite
                 using (StreamWriter outfile = File.CreateText(copyPath))
                 {
@@ -218,14 +219,14 @@ namespace Maniac.DataBaseSystem
 
         private static void CreateScriptableObject(string scriptName)
         {
-            Type type = System.Type.GetType($"Game.{scriptName}, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
+            Type type = System.Type.GetType($"{typeof(DataBaseConfig).Namespace}.{scriptName}, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null");
             if (type == null)
             {
                 return;
             }
 
             DataBaseConfig asset = (DataBaseConfig)ScriptableObject.CreateInstance(type);
-            AssetDatabase.CreateAsset(asset, $"{defaultConfigPath}/{type}.asset");
+            AssetDatabase.CreateAsset(asset, $"{defaultConfigPath}/{type.Name}.asset");
             DataBase.ActiveDatabase.Add(asset);
             AssetDatabase.SaveAssets();
         }

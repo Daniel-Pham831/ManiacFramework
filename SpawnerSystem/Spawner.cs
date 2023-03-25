@@ -3,9 +3,9 @@ using UnityEngine.Pool;
 
 namespace Maniac.SpawnerSystem
 {
-    public class Spawner<T> where T :MonoBehaviour
+    public class Spawner<T> where T :Object
     {
-        private readonly MonoBehaviour _prefab;
+        private readonly Object _prefab;
         private readonly ObjectPool<T> _pool;
         public ObjectPool<T> Pool => _pool;
         private int counter = 0;
@@ -24,20 +24,45 @@ namespace Maniac.SpawnerSystem
             return mono as T;
         }
 
-        private void GetFunction(T mono)
+        private void GetFunction(T obj)
         {
-            mono.gameObject.SetActive(true);
+            switch (obj)
+            {
+                case GameObject gobj:
+                    gobj.SetActive(true);
+                    break;
+                
+                case MonoBehaviour mono:
+                    mono.gameObject.SetActive(true);
+                    break;
+            }
         }
 
-        private void ReleaseFunction(T mono)
+        private void ReleaseFunction(T obj)
         {
-            mono.gameObject.SetActive(false);
+            switch (obj)
+            {
+                case GameObject gobj:
+                    gobj.SetActive(false);
+                    break;
+                
+                case MonoBehaviour mono:
+                    mono.gameObject.SetActive(false);
+                    break;
+            }
         }
 
-        private void DestroyFunction(T mono)
+        private void DestroyFunction(T obj)
         {
-            if(mono != null && mono.gameObject != null)
-                UnityEngine.Object.Destroy(mono.gameObject);
+            if (obj == null) return;
+            
+            Object.Destroy(obj);
+        }
+
+        public void Reset()
+        {
+            counter = 0;
+            _pool.Clear();
         }
     }
 }

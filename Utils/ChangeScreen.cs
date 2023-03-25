@@ -15,13 +15,13 @@ namespace Maniac.Utils
             Next = 1,
         }
 
-        [MenuItem("Tools/ChangeScreen/Previous Scene #1")]
+        [MenuItem("Maniac/Utils/ChangeScreen/Previous Scene #1")]
         static void LoadPreviousScene()
         {
             LoadScene(State.Previous);
         }
 
-        [MenuItem("Tools/ChangeScreen/Next Scene #2")]
+        [MenuItem("Maniac/Utils/ChangeScreen/Next Scene #2")]
         static void LoadNextScene()
         {
             LoadScene(State.Next);

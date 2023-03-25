@@ -1,4 +1,6 @@
+using Maniac.Utils.Extension;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace Maniac.ProfileSystem
 {
@@ -7,7 +9,15 @@ namespace Maniac.ProfileSystem
     {
         public virtual void Save()
         {
-            ProfileManager.Save(this);
+            var isSuccess = ProfileManager.Save(this);
+            if (isSuccess)
+            {
+                Debug.Log($"Save:{GetType().Name.AddColor("#Cb9ce0")} - {"Success".AddColor(Color.yellow)}");
+            }
+            else
+            {
+                Debug.Log($"Save:{GetType().Name.AddColor("#9025be")} - {"Fail".AddColor(Color.red)}-Please Check!");
+            }
         }
 
         public string ToJson()

@@ -1,9 +1,11 @@
 using System;
+using Maniac.Utils;
 
 namespace Maniac.TimeSystem
 {
     public class Timer
     {
+        private TimeManager _timeManager => Locator<TimeManager>.Instance;
         protected float currentTime = 0f;
         protected Action callback;
 
@@ -14,6 +16,8 @@ namespace Maniac.TimeSystem
 
         public void Start(float duration, Action callback = null)
         {
+            _timeManager.AddActiveTimer(this);
+            
             this.currentTime = duration;
             this.callback = callback;
 

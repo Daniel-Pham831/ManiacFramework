@@ -6,6 +6,7 @@ using Maniac.Utils.Extension;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 #if UNITY_EDITOR
 #endif
 
@@ -17,7 +18,6 @@ namespace Maniac.ProfileSystem
         const string PROFILE_DATA_FILE_NAME_SUFFIX = "json";
 
         public static Dictionary<string, ProfileRecord> recordsCache = new Dictionary<string, ProfileRecord>();
-        public static bool ShouldBinaryFormat { get; set; } = false;
 
         public static T Get<T>() where T : ProfileRecord
         {
@@ -27,22 +27,26 @@ namespace Maniac.ProfileSystem
             return Load<T>();
         }
 
-        public static void Save(ProfileRecord record)
+        public static bool Save(ProfileRecord record)
         {
-            string typeName = record.GetType().Name;
-            string savePath = $"{GetProfileFolderPath()}/{typeName}.{PROFILE_DATA_FILE_NAME_SUFFIX}";
-
-            string json = JsonConvert.SerializeObject(record,Formatting.Indented);
-            if (ShouldBinaryFormat)
+            bool result = false;
+            try
             {
+                string typeName = record.GetType().Name;
+                string savePath = $"{GetProfileFolderPath()}/{typeName}.{PROFILE_DATA_FILE_NAME_SUFFIX}";
 
-            }
-            else
-            {
+                string json = JsonConvert.SerializeObject(record, Formatting.Indented);
                 File.WriteAllText(savePath, json);
+
+                SaveCache(record);
+                result = true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
             }
 
-            SaveCache(record);
+            return result;
         }
 
         public static T Load<T>() where T : ProfileRecord
@@ -122,7 +126,7 @@ namespace Maniac.ProfileSystem
         }
 
 #if UNITY_EDITOR
-        [MenuItem("Tools/Clear Game Data")]
+        [MenuItem("Maniac/Profile/Clear All Game Data")]
         public static void ClearAllRecords()
         {
             bool isClear = EditorUtility.DisplayDialog("Clear All Data?", "All Personal data will be clear. Do you want it?", "Yes", "No");
@@ -133,7 +137,7 @@ namespace Maniac.ProfileSystem
             }
         }
 
-        [MenuItem("Tools/Open Persistant folder")]
+        [MenuItem("Maniac/Profile/Open Persistant folder")]
         public static void OpenPersistantFolder()
         {
             ProcessStartInfo StartInformation = new ProcessStartInfo();

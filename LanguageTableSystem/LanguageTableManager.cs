@@ -8,7 +8,7 @@ namespace Maniac.LanguageTableSystem
 {
     public class LanguageTableManager : OdinMenuEditorWindow
     {
-        [MenuItem("Tools/Language Table")]
+        [MenuItem("Maniac/LanguageTable/Open LanguageTable")]
         private static void OpenEditor() => GetWindow<LanguageTableManager>();
 
         protected override OdinMenuTree BuildMenuTree()
