@@ -70,7 +70,7 @@ namespace Maniac.Bootstrap.Scripts
             var subServiceGroup = new SequenceServiceGroup("Game Systems Services");
 
             // Add your game initialization services here
-
+            // You should create your own Service to change to your scene
             return subServiceGroup;
         }
     }
