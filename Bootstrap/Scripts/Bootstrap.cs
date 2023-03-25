@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Cysharp.Threading.Tasks;
-using DG.Tweening;
-using Game.Game;
-using Maniac.AudioSystem;
+﻿using Maniac.AudioSystem;
 using Maniac.DataBaseSystem;
 using Maniac.LanguageTableSystem;
 using Maniac.ProfileSystem;
@@ -11,8 +6,6 @@ using Maniac.Services;
 using Maniac.SpawnerSystem;
 using Maniac.TimeSystem;
 using Maniac.UISystem;
-using Maniac.Utils;
-using Maniac.Utils.Extension;
 using UnityEngine;
 
 namespace Maniac.Bootstrap.Scripts
