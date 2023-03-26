@@ -37,7 +37,7 @@ namespace Maniac.AudioSystem
 
         private void OnStopSound(string soundName)
         {
-            if(_audioName == soundName)
+            if (_audioName == soundName)
                 _spawnerManager.Release(this);
         }
 
@@ -65,7 +65,7 @@ namespace Maniac.AudioSystem
 
             _audioSource.volume = value;
         }
-        
+
         private void UpdateSoundVolume(float value)
         {
             if (_audioInfo == null) return;
@@ -90,20 +90,20 @@ namespace Maniac.AudioSystem
             _audioSource.clip = null;
         }
 
-        public void SetupAudio(AudioInfo audioInfo,string audioName, bool isLoop = false)
+        public void SetupAudio(AudioInfo audioInfo, string audioName, bool isLoop = false)
         {
             _audioName = audioName;
             _audioInfo = audioInfo;
             _audioSource.clip = audioInfo.TakeRandom();
             _audioSource.loop = isLoop;
-            
+
             UpdateMusicVolume(_audioManager.MusicVolume.Value);
             UpdateSoundVolume(_audioManager.SoundVolume.Value);
-            
-            if(!isLoop)
-                _spawnerManager.ReleaseAfter(this,_audioSource.clip.length);
-            
+
+            if (!isLoop)
+                _spawnerManager.ReleaseAfter(this, _audioSource.clip.length);
+
             _audioSource.Play();
-        } 
+        }
     }
 }

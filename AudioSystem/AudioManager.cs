@@ -57,6 +57,5 @@ namespace Maniac.AudioSystem
 
             SoundVolume.Value = value;
         }
-
     }
 }

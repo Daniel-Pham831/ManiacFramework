@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
+// This class is automatically generate when create new Language Item. Do NOT change anything here.
 namespace Maniac.LanguageTableSystem
 {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
