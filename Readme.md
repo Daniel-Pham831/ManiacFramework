@@ -101,3 +101,51 @@ Guide:
 - You can check your saved files here !
 
 ![img_10.png](img_10.png)
+
+## Spawner (Object Pooling) System
+### Object Pool using Unity ObjectPool<T>
+
+- Create any prefab that you want to clone, and clone it like example
+- **Notice**
+- After Changing Scene to Scene, you need to reset all of the spawner
+
+![img_11.png](img_11.png)
+
+## LanguageTable (Localization) System
+### Localization system for all type of texts
+
+- Create languages that you want to have in your project
+
+![img_12.png](img_12.png)
+
+- Create Language Item for any text that you want to be localized.
+
+![img_13.png](img_13.png)
+
+- Open Language Table and edit the language item that you just created
+
+![img_14.png](img_14.png)
+
+- You can make a TMP_Text, automatically change to other language using LanguageText component. Remember to Add the LanguageItem for it :P
+
+![img_15.png](img_15.png)
+
+- Sometime during runtime, you may need to use the LanguageItem in script. Here is how to do it.
+
+![img_16.png](img_16.png)
+
+- Small Tips. Use "_" to make LanguageItem goes into its own section
+
+![img_17.png](img_17.png)
+
+## Audio System
+### audio for 2d games, it could be use in 3d games, but you need to read down into the code a bit
+
+- Step by Step
+- Create new Audio Info ,  Add AudioClip into variations
+
+![img_18.png](img_18.png)
+
+- During runtime when you need to play that sound. This is how to do it in script
+
+![img_19.png](img_19.png)
